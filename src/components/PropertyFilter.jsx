@@ -13,7 +13,7 @@ export default function PropertyFilter({ onFilter }) {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
 
-  // ✅ QUITA SIMBOLOS Y FORMATEA
+  // QUITA SÍMBOLOS Y GUARDA SOLO NÚMEROS
   const handlePriceChange = (e) => {
     const { name, value } = e.target;
     const numeric = value.replace(/\D/g, ""); // deja solo números
@@ -41,12 +41,17 @@ export default function PropertyFilter({ onFilter }) {
   };
 
   return (
-    <Form className="p-3 bg-light rounded shadow-sm mb-4" onSubmit={handleSubmit}>
+    <Form
+      data-testid="filter-form"
+      className="p-3 bg-light rounded shadow-sm mb-4"
+      onSubmit={handleSubmit}
+    >
       <Row className="align-items-end">
         <Col md={3}>
           <Form.Group>
-            <Form.Label>Nombre</Form.Label>
+            <Form.Label htmlFor="filter-name">Nombre</Form.Label>
             <Form.Control
+              id="filter-name"
               name="name"
               value={filters.name}
               onChange={handleChange}
@@ -57,8 +62,9 @@ export default function PropertyFilter({ onFilter }) {
 
         <Col md={3}>
           <Form.Group>
-            <Form.Label>Dirección</Form.Label>
+            <Form.Label htmlFor="filter-address">Dirección</Form.Label>
             <Form.Control
+              id="filter-address"
               name="address"
               value={filters.address}
               onChange={handleChange}
@@ -69,8 +75,9 @@ export default function PropertyFilter({ onFilter }) {
 
         <Col md={2}>
           <Form.Group>
-            <Form.Label>Precio Mínimo</Form.Label>
+            <Form.Label htmlFor="filter-minPrice">Precio Mínimo</Form.Label>
             <Form.Control
+              id="filter-minPrice"
               type="text"
               name="minPrice"
               value={formatCurrency(filters.minPrice)}
@@ -82,8 +89,9 @@ export default function PropertyFilter({ onFilter }) {
 
         <Col md={2}>
           <Form.Group>
-            <Form.Label>Precio Máximo</Form.Label>
+            <Form.Label htmlFor="filter-maxPrice">Precio Máximo</Form.Label>
             <Form.Control
+              id="filter-maxPrice"
               type="text"
               name="maxPrice"
               value={formatCurrency(filters.maxPrice)}

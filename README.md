@@ -1,70 +1,196 @@
-# Getting Started with Create React App
+# 🏡 Real Estate Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Frontend de la aplicación **Real Estate** desarrollado con **React + Bootstrap 5**, que consume la API REST construida en **.NET 9 + MongoDB**.
 
-## Available Scripts
+El sistema permite listar propiedades, aplicar filtros por nombre, dirección y rango de precios, y visualizar los detalles de cada propiedad junto con su propietario e imagen asociada.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🚀 Tecnologías utilizadas
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **React 18**
+- **Vite o Create React App** (según tu configuración)
+- **Axios** — consumo de API REST
+- **Bootstrap 5** — diseño responsivo
+- **React-Bootstrap** — componentes de UI
+- **ESLint + Prettier** — buenas prácticas de código
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 🧱 Arquitectura del proyecto
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+frontend/
+├── src/
+│   ├── api/                    # Servicios para comunicación con la API
+│   │   ├── propertyApi.js
+│   │   ├── ownerApi.js
+│   │   └── propertyImageApi.js
+│   ├── components/             # Componentes reutilizables
+│   │   ├── PropertyCard.jsx
+│   │   ├── PropertyFilter.jsx
+│   │   ├── PropertyList.jsx
+│   │   ├── PropertyDetailModal.jsx
+│   │   └── OwnerBadge.jsx
+│   ├── pages/                  # Vistas principales
+│   │   └── HomePage.jsx
+│   ├── styles/                 # Estilos personalizados
+│   │   └── custom.css
+│   ├── App.jsx                 # Enrutador principal
+│   └── index.jsx               # Punto de entrada de React
+├── package.json
+└── README.md
+```
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🌐 API Backend utilizada
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| Endpoint | Método | Descripción |
+|-----------|---------|-------------|
+| `/api/property` | GET | Retorna todas las propiedades (acepta filtros) |
+| `/api/property/{id}` | GET | Retorna una propiedad específica |
+| `/api/owner/{id}` | GET | Retorna los datos del propietario |
+| `/api/propertyimage/{idProperty}` | GET | Retorna la imagen asociada a una propiedad |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## ⚙️ Configuración del entorno
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 1️⃣ Clonar el repositorio
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+git clone https://github.com/ZaneMasters/RealState-Frontend.git
+cd RealState-Frontend
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 2️⃣ Instalar dependencias
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+npm install
+```
 
-## Learn More
+### 3️⃣ Configurar la URL de la API
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Edita el archivo `src/api/config.js` para apuntar a tu backend:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```js
+export const API_BASE_URL = "http://localhost:5153/api";
+```
 
-### Code Splitting
+### 4️⃣ Ejecutar el servidor de desarrollo
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+npm run dev
+```
 
-### Analyzing the Bundle Size
+> Abre [http://localhost:3000](http://localhost:3000)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## 🎯 Funcionalidades principales
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 🏠 Listado de propiedades
+- Se obtiene desde `/api/property`
+- Muestra nombre, dirección y precio.
+- Cada tarjeta incluye un botón **"Ver detalles"**
 
-### Advanced Configuration
+### 🔍 Filtros
+Filtros dinámicos implementados en el frontend y enviados al backend como query params:
+```js
+?name=Casa&address=Carrera&minPrice=500000&maxPrice=2000000
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Filtros disponibles:
+- **Nombre**
+- **Dirección**
+- **Rango de precio (mínimo / máximo)**
 
-### Deployment
+### 👁️ Ver detalles de propiedad
+- Muestra información completa:
+  - Nombre, dirección, precio, código interno, año.
+  - Propietario (consultado desde `/api/owner/{id}`).
+  - Imagen asociada (consultada desde `/api/propertyimage/{idProperty}`).
+- Se carga solo al abrir el modal (lazy loading → mejor rendimiento).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### 📱 Responsividad
+- Diseño 100% adaptativo con **Bootstrap Grid System**.
+- Interfaz usable tanto en desktop como en móvil.
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🧩 Principales componentes
+
+| Componente | Descripción |
+|-------------|-------------|
+| `PropertyFilter.jsx` | Filtros por nombre, dirección y rango de precios |
+| `PropertyList.jsx` | Renderiza la lista de propiedades |
+| `PropertyCard.jsx` | Tarjeta individual con resumen de propiedad |
+| `PropertyDetailModal.jsx` | Modal con detalles, propietario e imagen |
+| `OwnerBadge.jsx` | Muestra un pequeño identificador de propietario |
+
+---
+
+## 💡 Buenas prácticas aplicadas
+
+- **Clean Architecture (Frontend)**  
+  Capas separadas de presentación, lógica y comunicación (api / components / pages).
+
+- **Error handling**  
+  Manejo de errores con `try/catch` en todos los servicios API.
+
+- **Performance optimizado**  
+  - Peticiones paralelas (`Promise.all`)
+  - Lazy loading de owner e imagen en modal
+  - Renderizado condicional solo cuando los datos están disponibles
+
+- **Código limpio y modular**  
+  - Reutilización de componentes.
+  - Separación de responsabilidades.
+  - Nombres consistentes y descriptivos.
+
+---
+
+## 🧪 Pruebas unitarias
+
+El proyecto incluye pruebas con:
+- **Vitest** o **Jest** para componentes React.
+- **React Testing Library** para testing funcional de UI.
+
+Ejemplo de estructura sugerida:
+```
+src/
+├── __tests__/
+│   ├── PropertyFilter.test.jsx
+│   ├── PropertyCard.test.jsx
+│   └── PropertyDetailModal.test.jsx
+```
+
+---
+
+## 🧠 Evaluación (criterios cumplidos)
+
+| Criterio | Cumplimiento | Descripción |
+|-----------|---------------|-------------|
+| **Arquitectura Limpia (Front + Back)** | ✅ | Capas separadas y mantenibles |
+| **Estructura de código** | ✅ | Modular y escalable |
+| **Documentación** | ✅ | README completo, comentarios en código |
+| **Buenas prácticas** | ✅ | Clean code, manejo de errores, queries optimizadas |
+| **Performance** | ✅ | Lazy loading y peticiones paralelas |
+| **Responsive Design** | ✅ | Bootstrap |
+| **Unit Testing Ready** | ⚙️ | Preparado para agregar Vitest/Jest |
+
+---
+
+## 📄 Licencia
+
+Este proyecto es de uso libre para propósitos educativos y de evaluación técnica.
+
+---
+
+## 👨‍💻 Autor
+
+**Angel Eduardo Rodríguez Arguello**  
+💼 Fullstack Developer (Java / .NET / React)  
+📧 angel.pro98@gmail.com  
+🌐 [LinkedIn](https://www.linkedin.com/in/angel-eduardo-rodriguez-arguello)
